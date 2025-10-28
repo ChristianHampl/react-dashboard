@@ -1,0 +1,296 @@
+
+:root {
+  /* Hauptfarben */
+  --color-deep-space-black: #0B0C10; /* Hintergrund / Base */
+  --color-electric-blue: #00B4FF;    /* Akzente / Hover / Links */
+  --color-vivid-magenta: #D400FF;    /* Primärfarbe / CTA-Buttons */
+  --color-royal-purple: #6C00FF;     /* Sekundärfarbe / Panels / Cards */
+  --color-soft-pink-glow: #FF6BD6;   /* Highlights / Glows / Icons */
+
+  /* Optional: Transparente Varianten für Gloweffects */
+  --glow-blue: rgba(0, 180, 255, 0.35);
+  --glow-pink: rgba(255, 107, 214, 0.35);
+}
+
+
+.menu{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 5;
+ display: flex;
+ flex-direction: column;
+}
+
+.menuItem {
+color: #FF6BD6;
+}
+
+.menuItem:hover {
+color: #fff
+}
+
+.menuItem.active {
+color: #00B4FF
+}
+
+/* Extended Menu */
+
+.menuExt{
+  position: absolute;
+  top: 8%;
+  left: 50%;
+  width: 100%;
+  transform: translate(-50%, -50%);
+  z-index: 5;
+ display: flex;
+ gap: 10% !important;
+ flex-direction: row;
+ overflow-x: auto;
+ justify-content: center;
+}
+
+.menuItemExt {
+  font-size: 1.5em;
+  text-decoration: none;
+  width: 200px;
+  position: relative;
+color: #fff;
+display: flex;
+justify-content: center;
+gap: 20px;
+align-items: center;
+border: 2px solid #FF6BD6;
+border-radius: 30px;
+}
+
+.menuItemExt span {
+  display: block;
+}
+
+.menuItemExt:hover {
+border: 2px solid #fff
+}
+
+.menuItemExt.active {
+border: 2px solid #00B4FF;
+}
+
+
+
+
+
+.background {
+  height: 100%;
+  width: 100%;
+  background-image: url(assets/background.png);
+  background-position: center;
+  background-size: cover;
+  background-repeat: none;
+  position: absolute;
+}
+
+.button {
+height: 20px;
+width: 40px;
+display: flex;;
+align-items: center;
+position: relative;
+z-index: 2;
+border-radius: 10px;
+background: rgba(237, 237, 237, 0.5);
+transition: all 0.4s ease;
+}
+
+.toggle {
+position: relative;
+left: 0;
+transform: translateX(0);
+height: 18px;
+width: 18px;
+border-radius: 50%;
+background: #ededed;
+transition: all 0.4s ease;
+cursor: pointer;
+}
+
+.toggle.active {
+left: 100%;
+transform: translateX(-100%);
+}
+
+.button.active {
+  background: #6C00FF;
+}
+
+.dashTogglesContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  position: absolute;
+  width: 300px;
+}
+
+.dashTogglesItems {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.dashTogglesItems h2 {
+  display: block
+}
+
+.Sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+  position: fixed;
+  left: 2%;
+  top: 0;
+  transform: translateY(5vh);
+  height: 90vh;
+  width: 280px; /* Beispielbreite */
+  background: rgba(38, 0, 84, 0.4);
+  transition: none;
+  z-index: 3;
+  backdrop-filter: blur(11px);
+  -webkit-backdrop-filter: blur(11px);
+  border-radius: 15px;
+  box-shadow: inset 0 0 8px rgba(106, 0, 255, 0.4); 
+}
+
+.fullSidebar {
+  position: absolute;
+  left: 2%;
+  top: 0;
+  transform: translateY(5vh);
+  height: 90vh;
+  width: 95%;
+  background: rgba(38, 0, 84, 1);
+  transition: none;
+  z-index: 2;
+  animation: extend 1s ease 0.5s;
+}
+
+@keyframes extend {
+  from {width: 0}
+  to {width: 95%;}
+  
+}
+
+.SideButton{
+  height: 80px;
+  width: 20px;
+  border-radius: 20px;
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  transition: all 0.4s ease;
+  border: none;
+  /* border-width: 0 0 0 2px;
+  border-style: solid;
+  border-color: #412B6B; */
+  box-shadow: 2px 0 2px rgba(0,0,0,0.5);
+}
+
+
+.sidebuttonBorder {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 15px;
+  padding: 0.3px;
+  background: linear-gradient(to top, #D400FF, #6C00FF, #0B0C10, #6C00FF, #00B4FF);
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  background-clip: border-box;
+  opacity: 0.7;
+}
+
+
+main {
+  display: flex;
+  width: 82%;
+  height: 90vh;
+  transform: translateY(5vh);
+  padding: 20px;
+  position: absolute;
+  z-index: 1;
+  left: 220px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(11px);
+  border-radius: 15px;
+  box-shadow: inset 0 0 8px rgba(106, 0, 255, 0.4); 
+}
+
+.card {
+  display: flex;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+  height: 40%;
+  width: 40%;
+  background-color: #FF6BD6;
+  flex-direction: column;
+  color: #2e2e2e;
+  border-radius: 30px;
+}
+
+.settings {
+  color: white;
+  position: absolute;
+  left: 10%;
+  top: 30%;
+  z-index: 10;
+} 
+
+.input-text {
+  color: #ededed;
+  border-radius: 10px;
+  outline: 3px solid rgb(38, 0, 84);
+  outline: 2px solid rgba(237, 237, 237, 0.7);
+  background: none;
+  width: 300px;
+  height: 50px;
+  border: none;
+  position: relative;
+  transition: all 0.4s ease;
+  font-size: 1.3em;
+  padding-left: 30px;
+}
+
+.label-text {
+  position: absolute;
+  left: 5%;
+  top: 25%;
+  z-index: 101;
+  color: rgba(237, 237, 237, 0.7);
+  background: rgb(12, 0, 25);
+  padding-left: 15px;
+  padding-right: 15px;
+  transition: all 0.2s ease;
+}
+
+.input-text:focus {
+    outline: 2px solid rgba(237, 237, 237, 1);
+}
+
+.input-text:focus + .label-text {
+  color: rgba(237, 237, 237, 1);
+  transform: translateY(-30px) !important;
+}
+
+hr {
+  position: absolute;
+  z-index: 10;
+  width: 80%;
+  top: 20%; 
+  border-radius: 100%;
+  opacity: 0.5;
+}
