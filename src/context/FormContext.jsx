@@ -8,6 +8,7 @@ export function FormProvider({ children }) {
     lastName: '',
     email: '',
     languages: [],
+    frameworks: [],
     showCard1: true,
     showCard2: true,
     showCard3: true,
@@ -21,13 +22,17 @@ export function FormProvider({ children }) {
   }
 
   function updateArrayField(field, value, checked) {
-  setFormData(prev => ({
-    ...prev,
-    [field]: checked
-      ? [...prev[field], value]
-      : prev[field].filter(item => item !== value),
-  }));
-}
+    setFormData(prev => {
+      const currentArray = Array.isArray(prev[field]) ? prev[field] : [];
+
+      return {
+        ...prev,
+        [field]: checked
+          ? [...currentArray, value]
+          : currentArray.filter(item => item !== value),
+      };
+    });
+  }
 
 function updateToggle(field) {
   setFormData(prev => ({
