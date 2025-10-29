@@ -4,7 +4,7 @@ export default function Input({ field, type = 'text', text }) {
   const { formData, updateField } = useForm();
 
   return (
-    <div>
+    <div className='inputItem'>
       <input
         type={type}
         className={`input-${type}`}

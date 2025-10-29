@@ -5,6 +5,7 @@ import { languageIcons, frameworkIcons }  from './assets/icons/language_icons.js
 export default function Checklist({ field, values }) {
   const { formData, updateArrayField } = useForm();
   const IconMapping = field === "languages" ? languageIcons : frameworkIcons;
+  let currentArray = [];
 
   return (
     <ul className='checklist'>
@@ -24,6 +25,14 @@ export default function Checklist({ field, values }) {
             )
         }
 
+          function handleLimit(e) {
+            if (formData[field].length <=4 ) // Limit: 5
+            updateArrayField(field, value, e.target.checked)
+            else {currentArray=formData[field]; console.log(currentArray)
+            }
+            if (currentArray.includes(value)) {updateArrayField(field, value, e.target.checked)}
+          }
+
         return (
           <li key={index} className="flex items-center gap-2">
             <input
@@ -32,9 +41,7 @@ export default function Checklist({ field, values }) {
               value={value}
               checked={isChecked}
               hidden
-              onChange={(e) =>
-                updateArrayField(field, value, e.target.checked)
-              }
+              onChange={(e)=> {handleLimit(e)}}
             />
             <DynamicLabel/>
           </li>
