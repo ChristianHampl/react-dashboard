@@ -9,6 +9,8 @@ export function FormProvider({ children }) {
     email: '',
     languages: [],
     frameworks: [],
+    langRatings: {},
+    frameRatings: {},
     showCard1: true,
     showCard2: true,
     showCard3: true,
@@ -41,9 +43,22 @@ function updateToggle(field) {
   }))
 }
 
+function updateRatings(field, array, i, value) {
+
+      const name = formData[array][i]
+
+      setFormData(prev => ({
+      
+        ...prev,
+        [field]: {
+          ...prev[field],
+          [name]: Number(value),
+        }
+      }))
+  }
 
   return (
-    <FormContext.Provider value={{ formData, updateField, updateArrayField, updateToggle }}>
+    <FormContext.Provider value={{ formData, updateField, updateArrayField, updateToggle, updateRatings }}>
       {children}
     </FormContext.Provider>
   );

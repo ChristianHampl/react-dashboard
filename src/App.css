@@ -370,3 +370,103 @@ hr {
 .icon.activeF {
   color: #00B4FF;
 }
+
+.rangeContainer {
+  position: relative;
+  width: 500px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+}
+
+.rangeBox {
+  height: 40px;
+  width: 100px;
+  background-color: #252836;
+  border-right: 1px solid rgba(11, 12, 16, 0.2);
+  border-left: 1px solid rgba(11, 12, 16, 0.2);
+  transition: all 0.5s ease;
+  cursor: pointer;
+}
+
+.rangeBox:hover,
+.rangeBoxStart:hover,
+.rangeBoxEnd:hover {
+  transform: scale(1.1);
+}
+
+.rangeBoxStart {
+  height: 40px;
+  width: 100px;
+  background-color: #252836;
+  border-radius: 40px 0 0 40px;
+  border-right: 1px solid rgba(11, 12, 16, 0.2);
+  cursor: pointer;
+}
+
+.rangeBoxEnd {
+  height: 40px;
+  width: 100px;
+  background-color: #252836;
+  border-radius: 0 40px 40px 0;
+  border-left: 1px solid rgba(11, 12, 16, 0.2);
+  cursor: pointer;
+}
+
+.activeLang {
+background-color: #FF6BD6;
+}
+
+.activeFrame {
+  background-color: #00B4FF;
+}
+
+.hoverDownLang {
+  background-color: #924a86;
+}
+
+.hoverUpLang {
+  background-color: #f6ace2;
+}
+
+.hoverDownFrame {
+  background-color: #136e9b;
+}
+
+.hoverUpFrame {
+  background-color: #77d1f6;
+}
+
+.ratingoverhead {
+  position: relative;
+  display: flex;
+  height: 80%;
+  width: 100%;
+  justify-content: space-between;
+  overflow-y: auto;
+}
+
+.ratingoverhead::after {
+  content: "";
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, 50%);
+  height: 20px;
+  width: 20px;
+  background: #6C00FF;
+  border-radius: 50%;
+}
+
+.ratingContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.ratingItem {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
