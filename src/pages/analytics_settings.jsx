@@ -2,7 +2,8 @@ import { useForm } from '../context/FormContext.jsx';
 import { useState } from 'react';
 
 export default function AnalyticsSettings() {
-  const { formData, updateRatings } = useForm();
+  const { formData, updateRatings, handleTextInput } = useForm();
+  const [ inputText, setInputText ] = useState('');
 
   const RatingItem = ({ field, array, name, i }) => {
     const value = formData[field]?.[name] || 0;
@@ -20,14 +21,11 @@ export default function AnalyticsSettings() {
             if (num === 1) classes += ' rangeBoxStart';
             if (num === 5) classes += ' rangeBoxEnd';
 
-            // Aktiv
             if (num <= value) classes += array === 'languages' ? ' activeLang' : ' activeFrame';
 
             if (hoverValue !== null) {
-              // Hover über Wert
               if (hoverValue > value && num > value && num <= hoverValue)
                 classes += array === 'languages' ? ' hoverUpLang' : ' hoverUpFrame';
-              // Hover unter Wert
               if (hoverValue < value && num > hoverValue && num <= value)
                 classes += array === 'languages' ? ' hoverDownLang' : ' hoverDownFrame';
             }
@@ -64,9 +62,19 @@ export default function AnalyticsSettings() {
   };
 
   return (
-    <div className="ratingoverhead">
-      <RatingList field="langRatings" array="languages" />
-      <RatingList field="frameRatings" array="frameworks" />
-    </div>
+    <>
+      <div className='analyticContainer'>
+        <h2>Tech Stack:</h2>
+        <div className="ratingoverhead">
+          <RatingList field="langRatings" array="languages" />
+          <RatingList field="frameRatings" array="frameworks" />
+        </div>
+        <textarea
+          className="textareaInput"
+          value={formData.notes}
+          onChange={(e) => handleTextInput("notes", e.target.value)}
+        />
+      </div>
+    </>
   );
 }
