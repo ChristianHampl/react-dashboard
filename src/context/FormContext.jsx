@@ -1,3 +1,4 @@
+import { set } from 'date-fns';
 import { createContext, useContext, useState } from 'react';
 
 // Context erstellen
@@ -11,6 +12,8 @@ export function FormProvider({ children }) {
     gitHubUrl: 'https://github.com/',        // GitHub URL vom User
     gitHubUsername: '',   // automatisch extrahiert
     gitHubUsernameValid: false,
+    projectImages: [],
+    repos: [],
     languages: [],        // ausgewählte Sprachen (von GitHub)
     frameworks: [],       // manuell ausgewählte Frameworks
     githubLanguages: {},  // Rohdaten von GitHub
@@ -19,6 +22,7 @@ export function FormProvider({ children }) {
     showCard1: true,
     showCard2: true,
     showCard3: true,
+    showRepos: true,
     notes: '',
   });
 
@@ -55,6 +59,20 @@ export function FormProvider({ children }) {
     setFormData(prev => ({ ...prev, [field]: value }));
   }
 
+
+  function handleImageUpload(field, fileslist) {
+    const files = Array.from(fileslist);
+    const urls = files.map(file => URL.createObjectURL(file)) 
+
+    setFormData (prev => ({
+      ...prev,
+      [field]: [...prev[field] || [], ...urls]
+    }))
+  }
+
+  // ****
+
+
   // --- Hilfsfunktion: GitHub Username extrahieren ---
   function extractUsernameFromUrl(url) {
     try {
@@ -67,65 +85,75 @@ export function FormProvider({ children }) {
 
   // --- GitHub Daten abrufen & automatisch in formData speichern ---
   async function handleFetchGitHubData(githubUrl, token) {
-     console.log("handleFetchGitHubData aufgerufen mit:", githubUrl);
-    const username = extractUsernameFromUrl(githubUrl);
-    if (!username) return; // ungültige URL -> nichts tun
+  console.log("handleFetchGitHubData aufgerufen mit:", githubUrl);
 
-    setFormData(prev => ({ ...prev, gitHubUsername: username }));
+  const username = extractUsernameFromUrl(githubUrl);
+  if (!username) return;
 
-    try {
-      // 1️⃣ Alle Repos des Users abrufen
-      const repoRes = await fetch(`https://api.github.com/users/${username}/repos`, {
-        headers: token ? { Authorization: `Bearer ${token}` } : {},
+  setFormData(prev => ({ ...prev, gitHubUsername: username }));
+
+  try {
+    // 1️⃣ Repositories abrufen
+    const repoRes = await fetch(`https://api.github.com/users/${username}/repos`, {
+      headers: token ? { Authorization: `Bearer ${token}` } : {},
+    });
+    if (!repoRes.ok) throw new Error("Fehler beim Laden der Repos");
+
+    const repos = await repoRes.json();
+
+    // 2️⃣ Datenstrukturen vorbereiten
+    const totals = {};
+    const repoList = []; // hier sammeln wir die Repos
+
+    // 3️⃣ Durch alle Repos iterieren
+    for (const repo of repos) {
+      // Grunddaten merken
+      repoList.push({
+        name: repo.name,
+        description: repo.description || "Keine Beschreibung",
+        url: repo.html_url,
       });
 
-      if (!repoRes.ok) throw new Error("Fehler beim Laden der Repos");
-       
-      setFormData(prev=> ({...prev, gitHubUsernameValid: true}))
-      
-      const repos = await repoRes.json();
+      // Sprachen für dieses Repo abrufen
+      const langRes = await fetch(repo.languages_url, {
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
+      });
+      const langs = await langRes.json();
 
-      
-
-      const totals = {};
-
-      // 2️⃣ Jedes Repo einzeln prüfen
-      for (const repo of repos) {
-        const langRes = await fetch(repo.languages_url, {
-          headers: token ? { Authorization: `Bearer ${token}` } : {},
-        });
-        const langs = await langRes.json();
-
-        for (const [lang, bytes] of Object.entries(langs)) {
-          totals[lang] = (totals[lang] || 0) + bytes;
-        }
+      // Bytes addieren
+      for (const [lang, bytes] of Object.entries(langs)) {
+        totals[lang] = (totals[lang] || 0) + bytes;
       }
-
-      // 3️⃣ Sprachen nach Bytes sortieren
-      const sortedLanguages = Object.entries(totals)
-        .sort((a, b) => b[1] - a[1])
-        .map(([lang]) => lang);
-
-      // 4️⃣ Ratings automatisch berechnen (1–5 Skala)
-      const maxBytes = Math.max(...Object.values(totals), 1); // prevent division by zero
-      const langRatings = {};
-      for (const [lang, bytes] of Object.entries(totals)) {
-        langRatings[lang] = Math.max(1, Math.round((bytes / maxBytes) * 5));
-      }
-
-      // 5️⃣ formData updaten
-      setFormData(prev => ({
-        ...prev,
-        githubLanguages: totals,
-        languages: sortedLanguages,
-        langRatings,
-      }));
-
-    } catch (err) {
-      setFormData(prev=> ({...prev, gitHubUsernameValid: false}));
-      console.error("Fehler beim Abrufen der GitHub-Daten:", err);
     }
+
+    // 4️⃣ Sprachen sortieren
+    const sortedLanguages = Object.entries(totals)
+      .sort((a, b) => b[1] - a[1])
+      .map(([lang]) => lang);
+
+    // 5️⃣ Ratings berechnen
+    const maxBytes = Math.max(...Object.values(totals), 1);
+    const langRatings = {};
+    for (const [lang, bytes] of Object.entries(totals)) {
+      langRatings[lang] = Math.max(1, Math.round((bytes / maxBytes) * 5));
+    }
+
+    // 6️⃣ Alles im Context speichern
+    setFormData(prev => ({
+      ...prev,
+      githubLanguages: totals,
+      gitHubUsernameValid: true,
+      languages: sortedLanguages,
+      langRatings,
+      repos: repoList, // ✨ neue Daten hier
+    }));
+
+  } catch (err) {
+    console.error("Fehler beim Abrufen der GitHub-Daten:", err);
+    setFormData(prev => ({...prev, gitHubUsernameValid: false,}))
   }
+}
+
 
   return (
     <FormContext.Provider
@@ -136,6 +164,7 @@ export function FormProvider({ children }) {
         updateToggle,
         updateRatings,
         handleTextInput,
+        handleImageUpload,
         handleFetchGitHubData, // neu
       }}
     >

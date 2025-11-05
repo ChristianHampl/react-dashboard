@@ -2,7 +2,7 @@ import {useEffect, useState, memo} from 'react'
 import UserData from './user.jsx'
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { NavLink } from "react-router-dom";
-import { House, Settings2, ChartLine, Send, LogOut, User } from 'lucide-react';
+import { House, Settings2, ChartLine, Send, LogOut, User, FolderGit2 } from 'lucide-react';
 import { useExtended } from './context/ExtendContext.jsx';
 
 import DashboardSettings from "./pages/dashboard_settings.jsx";
@@ -30,8 +30,8 @@ const Navbar = memo(({ isExtended}) => {
             <span>Profile</span>
             </NavLink>
             <NavLink to="/share" className='menuItemExt'>
-            <Send size={18} />
-            <span>Share</span>
+            <FolderGit2 size={18} />
+            <span>Projects</span>
             </NavLink>
         </nav>
 
@@ -60,7 +60,7 @@ const Navbar = memo(({ isExtended}) => {
         <User size={40} />
         </NavLink>
         <NavLink to="/share" className='menuItem'>
-        <Send size={40} />
+        <FolderGit2 size={40} />
         </NavLink>
     </nav>
     )

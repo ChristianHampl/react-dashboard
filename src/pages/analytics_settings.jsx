@@ -47,7 +47,7 @@ export default function AnalyticsSettings() {
 
   const RatingList = ({ field, array }) => {
     if (!Array.isArray(formData[array]) || formData[array].length === 0) {
-      return <div><h2>{`Keine ${field} ausgewählt.`}</h2></div>;
+      return <div><h2>{`Keine ${array} ausgewählt.`}</h2></div>;
     }
 
     return (
