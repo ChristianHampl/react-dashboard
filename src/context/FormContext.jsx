@@ -13,6 +13,7 @@ export function FormProvider({ children }) {
     gitHubUsername: '',   // automatisch extrahiert
     gitHubUsernameValid: false,
     projectImages: [],
+    projectImagesLinks: [],
     repos: [],
     languages: [],        // ausgewählte Sprachen (von GitHub)
     frameworks: [],       // manuell ausgewählte Frameworks
@@ -66,9 +67,27 @@ export function FormProvider({ children }) {
 
     setFormData (prev => ({
       ...prev,
-      [field]: [...prev[field] || [], ...urls]
-    }))
+      [field]: [
+        ...(prev[field] || []),
+        ...files.map(file => ({
+          id: Date.now() + Math.random(),
+          url: URL.createObjectURL(file),
+          link: "", 
+        }))
+      ]
+    }));
   }
+
+function handleImageHref(field, value, i) {
+  setFormData(prev => {
+    const arr = [...prev[field]]; // Array kopieren
+    arr[i] = {...arr[i], link: value};              // nur das i-te Element ändern
+    return {
+      ...prev,
+      [field]: arr
+    };
+  });
+}
 
   // ****
 
@@ -165,6 +184,7 @@ export function FormProvider({ children }) {
         updateRatings,
         handleTextInput,
         handleImageUpload,
+        handleImageHref,
         handleFetchGitHubData, // neu
       }}
     >

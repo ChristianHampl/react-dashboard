@@ -191,6 +191,31 @@ transform: translateX(-100%);
   opacity: 1;
 }
 
+.popupContainer {
+  display: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 300px;
+  height: 200px;
+  background-color: #6C00FF;
+}
+
+.popupButtonClose {
+  position: relative;
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  background-color: #ededed;
+}
+
+.popupButtonShow {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  background-color: #ededed;
+}
+
 
 
 .Sidebar {
