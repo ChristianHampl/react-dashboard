@@ -1,9 +1,9 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import {useForm} from './context/FormContext.jsx';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import './App.css'
 import Sidebar from './Sidebar.jsx'
 import userdata from  './userdata.js'
-import Cards from './cards.jsx'
 
 import Dashboard from "./pages/dashboard.jsx";
 import Analytics from "./pages/analytics.jsx";
@@ -15,7 +15,18 @@ const user = userdata;
 
 
 function App() {
+  const {formData, handleFetchGitHubData} = useForm();
+
+      useEffect(() => {
+        if(formData.gitHubUrl)
+     {handleFetchGitHubData(formData.gitHubUrl);}
+        }, []);
+
+
+
   const [isDarkMode, setIsDarkMode] = useState(false);
+
+
    function handleDarkMode() {
     setIsDarkMode(!isDarkMode)
    }
