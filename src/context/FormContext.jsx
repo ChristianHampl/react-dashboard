@@ -13,7 +13,7 @@ export function FormProvider({ children }) {
     language: 'german, english',
     cv: '',
     email: 'chris.hampl35@googlemail.com',
-    profileImg: {url:"src/assets/imageData/profileIMG.jpeg", file: null},
+    profileImg: {url:"/profileIMG.jpeg", file: null},
     instagram:'https://www.instagram.com/christian.hampl',
     linkedin:'https://www.linkedin.com',
     gitHubUrl: 'https://github.com/ChristianHampl',
